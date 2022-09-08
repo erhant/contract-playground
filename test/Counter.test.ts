@@ -37,7 +37,7 @@ describe('Counter', () => {
 
     it('should NOT count down due to underflow exception', async () => {
       await expect(counter.countDown()).to.be.revertedWith(
-        'Error: VM Exception while processing transaction: reverted with panic code 0x11 (Arithmetic operation underflowed or overflowed outside of an unchecked block)'
+        'VM Exception while processing transaction: reverted with panic code 0x11 (Arithmetic operation underflowed or overflowed outside of an unchecked block)'
       );
     });
   });
