@@ -1,0 +1,11 @@
+{
+  "extends": "./node_modules/gts/tsconfig-google.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+    "strict": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "artifacts", "cache"],
+  "files": ["./hardhat.config.ts"]
+}
