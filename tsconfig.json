@@ -2,8 +2,10 @@
   "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
     "rootDir": ".",
-    "outDir": "dist",
-    "strict": true
+    "outDir": "build",
+    "target": "es2018",
+    "module": "commonjs",
+    "strict": true,
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules", "artifacts", "cache"],
