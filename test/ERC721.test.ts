@@ -1,21 +1,17 @@
-import {ethers} from 'hardhat';
 import {expect} from 'chai';
+import {ethers} from 'hardhat';
+import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {MyERC721, MyERC721__factory} from '../types/typechain';
-import {Signer, constants as ethersConstants} from 'ethers';
 import constants from '../constants';
 
 describe('ERC721', () => {
   let myERC721: MyERC721;
-  let owner: Signer;
-  let ownerAddress: string;
-  let alice: Signer;
-  let aliceAddress: string;
-  let signers: Signer[];
+  let owner: SignerWithAddress;
+  let alice: SignerWithAddress;
+  let signers: SignerWithAddress[];
 
   before(async () => {
     [owner, alice, ...signers] = await ethers.getSigners();
-    ownerAddress = await owner.getAddress();
-    aliceAddress = await alice.getAddress();
     const factory = (await ethers.getContractFactory('MyERC721', owner)) as MyERC721__factory;
     myERC721 = await factory.deploy(constants.MyERC721.name, constants.MyERC721.symbol, constants.MyERC721.supply);
     await myERC721.deployed();
@@ -25,7 +21,7 @@ describe('ERC721', () => {
     it('should have correct name, symbol and owner', async () => {
       expect(await myERC721.name()).to.eq(constants.MyERC721.name);
       expect(await myERC721.symbol()).to.eq(constants.MyERC721.symbol);
-      expect(await myERC721.owner()).to.eq(ownerAddress);
+      expect(await myERC721.owner()).to.eq(owner.address);
     });
   });
 
@@ -40,28 +36,28 @@ describe('ERC721', () => {
     it('should mint for Owner', async () => {
       await Promise.all(
         ownerTokensMint.map(expectedtokenId =>
-          expect(myERC721.safeMint(ownerAddress))
+          expect(myERC721.safeMint(owner.address))
             .to.emit(myERC721, 'Transfer')
-            .withArgs(ethersConstants.AddressZero, ownerAddress, expectedtokenId)
+            .withArgs(ethers.constants.AddressZero, owner.address, expectedtokenId)
         )
       );
-      expect(await myERC721.balanceOf(ownerAddress)).to.eq(ownerTokensMint.length);
+      expect(await myERC721.balanceOf(owner.address)).to.eq(ownerTokensMint.length);
     });
 
     // mint [n, n+1, ..., n+n-1] to Alice
     it('should mint for Alice via Owner', async () => {
       await Promise.all(
         aliceTokensMint.map(expectedtokenId =>
-          expect(myERC721.safeMint(aliceAddress))
+          expect(myERC721.safeMint(alice.address))
             .to.emit(myERC721, 'Transfer')
-            .withArgs(ethersConstants.AddressZero, aliceAddress, expectedtokenId)
+            .withArgs(ethers.constants.AddressZero, alice.address, expectedtokenId)
         )
       );
-      expect(await myERC721.balanceOf(aliceAddress)).to.eq(aliceTokensMint.length);
+      expect(await myERC721.balanceOf(alice.address)).to.eq(aliceTokensMint.length);
     });
 
     it('should NOT mint for Alice via Alice', async () => {
-      await expect(myERC721.connect(alice).safeMint(aliceAddress)).to.be.revertedWith(
+      await expect(myERC721.connect(alice).safeMint(alice.address)).to.be.revertedWith(
         'Ownable: caller is not the owner'
       );
     });
@@ -72,47 +68,47 @@ describe('ERC721', () => {
 
     it('should allow transfer of an owned NFT', async () => {
       // transfer from owner to alice
-      await expect(myERC721['safeTransferFrom(address,address,uint256)'](ownerAddress, aliceAddress, tokenId))
+      await expect(myERC721['safeTransferFrom(address,address,uint256)'](owner.address, alice.address, tokenId))
         .to.emit(myERC721, 'Transfer')
-        .withArgs(ownerAddress, aliceAddress, tokenId);
-      expect(await myERC721.ownerOf(tokenId)).to.eq(aliceAddress);
+        .withArgs(owner.address, alice.address, tokenId);
+      expect(await myERC721.ownerOf(tokenId)).to.eq(alice.address);
 
       // transfer back
       await expect(
-        myERC721.connect(alice)['safeTransferFrom(address,address,uint256)'](aliceAddress, ownerAddress, tokenId)
+        myERC721.connect(alice)['safeTransferFrom(address,address,uint256)'](alice.address, owner.address, tokenId)
       )
         .to.emit(myERC721, 'Transfer')
-        .withArgs(aliceAddress, ownerAddress, tokenId);
-      expect(await myERC721.ownerOf(tokenId)).to.eq(ownerAddress);
+        .withArgs(alice.address, owner.address, tokenId);
+      expect(await myERC721.ownerOf(tokenId)).to.eq(owner.address);
     });
 
     it('should NOT allow transfer of an NFT that is not owned', async () => {
       await expect(
-        myERC721.connect(alice)['safeTransferFrom(address,address,uint256)'](ownerAddress, aliceAddress, tokenId)
+        myERC721.connect(alice)['safeTransferFrom(address,address,uint256)'](owner.address, alice.address, tokenId)
       ).to.be.revertedWith('ERC721: caller is not token owner nor approved');
     });
 
     it('should allow approval & transferFrom of an owned NFT', async () => {
       // owner approves alice for the transfer
-      await expect(myERC721.approve(aliceAddress, tokenId))
+      await expect(myERC721.approve(alice.address, tokenId))
         .to.emit(myERC721, 'Approval')
-        .withArgs(ownerAddress, aliceAddress, tokenId);
+        .withArgs(owner.address, alice.address, tokenId);
 
       // alice calls transfer-from
       await expect(
-        myERC721.connect(alice)['safeTransferFrom(address,address,uint256)'](ownerAddress, aliceAddress, tokenId)
+        myERC721.connect(alice)['safeTransferFrom(address,address,uint256)'](owner.address, alice.address, tokenId)
       )
         .to.emit(myERC721, 'Transfer')
-        .withArgs(ownerAddress, aliceAddress, tokenId);
-      expect(await myERC721.ownerOf(tokenId)).to.eq(aliceAddress);
+        .withArgs(owner.address, alice.address, tokenId);
+      expect(await myERC721.ownerOf(tokenId)).to.eq(alice.address);
 
       // transfer back
       await expect(
-        myERC721.connect(alice)['safeTransferFrom(address,address,uint256)'](aliceAddress, ownerAddress, tokenId)
+        myERC721.connect(alice)['safeTransferFrom(address,address,uint256)'](alice.address, owner.address, tokenId)
       )
         .to.emit(myERC721, 'Transfer')
-        .withArgs(aliceAddress, ownerAddress, tokenId);
-      expect(await myERC721.ownerOf(tokenId)).to.eq(ownerAddress);
+        .withArgs(alice.address, owner.address, tokenId);
+      expect(await myERC721.ownerOf(tokenId)).to.eq(owner.address);
     });
   });
 });

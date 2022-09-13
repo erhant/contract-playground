@@ -7,7 +7,7 @@ const contractConstants = {
     symbol: 'M20',
   },
   MyERC721: {
-    supply: parseEther('100'),
+    supply: 100,
     name: 'My ERC721 Token',
     symbol: 'M721',
   },

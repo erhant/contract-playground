@@ -1,12 +1,12 @@
-import {ethers} from 'hardhat';
 import {expect} from 'chai';
-import {Counter__factory, Counter} from '../types/typechain';
-import {BigNumber, Signer} from 'ethers';
+import {ethers} from 'hardhat';
+import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
+import {Counter, Counter__factory} from '../types/typechain';
 
 describe('Counter', () => {
   let counter: Counter;
-  let owner: Signer;
-  let signers: Signer[];
+  let owner: SignerWithAddress;
+  let signers: SignerWithAddress[];
 
   beforeEach(async () => {
     [owner, ...signers] = await ethers.getSigners();

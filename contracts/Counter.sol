@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
+/// A simple counter contract, which counts up and down.
 contract Counter {
   uint256 private count = 0;
 
@@ -21,7 +22,7 @@ contract Counter {
   }
 
   function countDown() external returns (uint256) {
-    // require(count > 0, "Count is already 0.");
+    // does not check for underflow, as compiler 0.8.0^ adds runtime checks for that
     count = count - 1;
     emit CountedTo(count);
     return count;

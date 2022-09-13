@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/token/ERC777/ERC777.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
+/// A simple ERC20 token, mints all the supply to the contract creator.
 contract MyERC20 is ERC20 {
   constructor(
     string memory name_,
@@ -18,6 +19,7 @@ contract MyERC20 is ERC20 {
   }
 }
 
+/// A simple ERC721 token, gives the owner ability to mint tokens one at a time.
 contract MyERC721 is ERC721, Ownable {
   using Counters for Counters.Counter;
 
