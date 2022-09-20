@@ -41,3 +41,15 @@ contract MyERC721 is ERC721, Ownable {
     _safeMint(to, tokenId);
   }
 }
+
+/// A simple ERC20 token, mints all the supply to the contract creator.
+contract MyERC777 is ERC777 {
+  constructor(
+    string memory name_,
+    string memory symbol_,
+    uint256 supply_,
+    address[] memory ops_
+  ) ERC777(name_, symbol_, ops_) {
+    _mint(msg.sender, supply_, "", "");
+  }
+}

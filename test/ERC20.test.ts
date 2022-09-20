@@ -21,6 +21,7 @@ describe('ERC20', () => {
     it('should have correct name, symbol, and supply at owner', async () => {
       expect(await myERC20.name()).to.eq(constants.MyERC20.name);
       expect(await myERC20.symbol()).to.eq(constants.MyERC20.symbol);
+      expect(await myERC20.decimals()).to.eq(18);
       expect(await myERC20.balanceOf(owner.address)).to.eq(constants.MyERC20.supply);
     });
   });

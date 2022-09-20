@@ -1,5 +1,5 @@
 import {ethers} from 'hardhat';
-import {Counter, Counter__factory} from '../types/typechain';
+import type {Counter__factory} from '../types/typechain';
 
 /**
  * Deploys a Counter contract
@@ -8,7 +8,7 @@ import {Counter, Counter__factory} from '../types/typechain';
 export default async function main(): Promise<string> {
   console.log('\n[Counter Contract]');
   const factory = (await ethers.getContractFactory('Counter')) as Counter__factory;
-  const contract = (await factory.deploy()) as Counter;
+  const contract = await factory.deploy();
   await contract.deployed();
 
   console.log(`\tContract is deployed at ${contract.address}`);
