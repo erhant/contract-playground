@@ -8,10 +8,9 @@ describe('ERC20', () => {
   let myERC20: MyERC20;
   let owner: SignerWithAddress;
   let alice: SignerWithAddress;
-  let signers: SignerWithAddress[];
 
   before(async () => {
-    [owner, alice, ...signers] = await ethers.getSigners();
+    [owner, alice] = await ethers.getSigners();
     const erc20Factory = (await ethers.getContractFactory('MyERC20', owner)) as MyERC20__factory;
     myERC20 = await erc20Factory.deploy(constants.MyERC20.name, constants.MyERC20.symbol, constants.MyERC20.supply);
     await myERC20.deployed();

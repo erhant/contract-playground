@@ -6,10 +6,9 @@ import {Counter, Counter__factory} from '../types/typechain';
 describe('Counter', () => {
   let counter: Counter;
   let owner: SignerWithAddress;
-  let signers: SignerWithAddress[];
 
   beforeEach(async () => {
-    [owner, ...signers] = await ethers.getSigners();
+    [owner] = await ethers.getSigners();
 
     const factory = (await ethers.getContractFactory('Counter', owner)) as Counter__factory;
     counter = await factory.deploy();
