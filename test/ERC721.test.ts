@@ -12,7 +12,12 @@ describe('ERC721', () => {
   before(async () => {
     [owner, alice] = await ethers.getSigners();
     const factory = (await ethers.getContractFactory('MyERC721', owner)) as MyERC721__factory;
-    myERC721 = await factory.deploy(constants.MyERC721.name, constants.MyERC721.symbol, constants.MyERC721.supply);
+    myERC721 = await factory.deploy(
+      constants.MyERC721.name,
+      constants.MyERC721.symbol,
+      constants.MyERC721.supply,
+      constants.MyERC721.baseURI
+    );
     await myERC721.deployed();
   });
 
@@ -40,7 +45,10 @@ describe('ERC721', () => {
             .withArgs(ethers.constants.AddressZero, owner.address, expectedtokenId)
         )
       );
+      // correct balance
       expect(await myERC721.balanceOf(owner.address)).to.eq(ownerTokensMint.length);
+      // correct tokenURIs
+      expect(await myERC721.tokenURI(ownerTokensMint[0])).to.eq(constants.MyERC721.baseURI + ownerTokensMint[0]);
     });
 
     // mint [n, n+1, ..., n+n-1] to Alice
@@ -52,7 +60,10 @@ describe('ERC721', () => {
             .withArgs(ethers.constants.AddressZero, alice.address, expectedtokenId)
         )
       );
+      // correct balance
       expect(await myERC721.balanceOf(alice.address)).to.eq(aliceTokensMint.length);
+      // correct tokenURIs
+      expect(await myERC721.tokenURI(aliceTokensMint[0])).to.eq(constants.MyERC721.baseURI + aliceTokensMint[0]);
     });
 
     it('should NOT mint for Alice via Alice', async () => {

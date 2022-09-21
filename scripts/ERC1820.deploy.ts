@@ -12,7 +12,7 @@ export default async function deployERC1820(issuer: SignerWithAddress) {
   if (code === '0x') {
     await issuer.sendTransaction({
       to: constants.ERC1820.deployer,
-      value: '0x11c37937e080000', // TODO: explain
+      value: constants.ERC1820.value,
     });
     await ethers.provider.send('eth_sendRawTransaction', [constants.ERC1820.payload]);
   }
