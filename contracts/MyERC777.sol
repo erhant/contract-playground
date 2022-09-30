@@ -25,28 +25,23 @@ contract MyERC777Recipient is IERC777Recipient, ERC1820Implementer {
   address public lastReceivedFrom;
 
   constructor() {
+    // register to ERC1820 registry
     _ERC1820_REGISTRY.setInterfaceImplementer(
-      address(0),
+      address(this),
       _ERC1820_REGISTRY.interfaceHash("ERC777TokensRecipient"),
       address(this)
     );
   }
 
   function tokensReceived(
-    address operator,
+    address, /* operator */
     address from,
-    address to,
-    uint256 amount,
-    bytes calldata userData,
-    bytes calldata operatorData
+    address, /* to */
+    uint256, /* amount */
+    bytes calldata, /* userData */
+    bytes calldata /* operatorData */
   ) external override {
     lastReceivedFrom = from;
     numTimesReceived++;
-    // silence compiler error
-    operator;
-    amount;
-    to;
-    userData;
-    operatorData;
   }
 }

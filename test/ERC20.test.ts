@@ -2,7 +2,8 @@ import {expect} from 'chai';
 import {ethers} from 'hardhat';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {MyERC20, MyERC20__factory} from '../types/typechain';
-import constants from '../constants';
+import allConstants from '../constants';
+const constants = allConstants.MyERC20;
 
 describe('ERC20', () => {
   let myERC20: MyERC20;
@@ -12,16 +13,16 @@ describe('ERC20', () => {
   before(async () => {
     [owner, alice] = await ethers.getSigners();
     const erc20Factory = (await ethers.getContractFactory('MyERC20', owner)) as MyERC20__factory;
-    myERC20 = await erc20Factory.deploy(constants.MyERC20.name, constants.MyERC20.symbol, constants.MyERC20.supply);
+    myERC20 = await erc20Factory.deploy(constants.name, constants.symbol, constants.supply);
     await myERC20.deployed();
   });
 
   describe('deployment', async () => {
     it('should have correct name, symbol, and supply at owner', async () => {
-      expect(await myERC20.name()).to.eq(constants.MyERC20.name);
-      expect(await myERC20.symbol()).to.eq(constants.MyERC20.symbol);
+      expect(await myERC20.name()).to.eq(constants.name);
+      expect(await myERC20.symbol()).to.eq(constants.symbol);
       expect(await myERC20.decimals()).to.eq(18);
-      expect(await myERC20.balanceOf(owner.address)).to.eq(constants.MyERC20.supply);
+      expect(await myERC20.balanceOf(owner.address)).to.eq(constants.supply);
     });
   });
 

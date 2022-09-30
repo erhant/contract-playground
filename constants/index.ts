@@ -21,7 +21,7 @@ const contractConstants = {
   MyERC1155: {
     supplies: [
       parseEther('100'), // a fungible token with 100 ether supply, tokenID: 0
-      parseEther('800'), // a fungible token wit 800 ether supply, tokenID: 1
+      parseEther('800'), // a fungible token with 800 ether supply, tokenID: 1
       BigNumber.from(1), // a non-fungible token, tokenID: 2; there is only one of this existing
     ],
     URI: 'https://localhost:8080/1155tokens/{id}.json',

@@ -2,6 +2,7 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
@@ -20,5 +21,38 @@ contract MyERC1155 is ERC1155, Ownable {
     uint256 tokenId = _tokenIdCounter.current();
     _tokenIdCounter.increment();
     _mint(to, tokenId, supply, data);
+  }
+}
+
+contract MyERC1155Recipient is IERC1155Receiver {
+  uint256 public numTimesReceived = 0;
+  address public lastReceivedFrom;
+
+  function onERC1155Received(
+    address, /* operator */
+    address from,
+    uint256, /* id */
+    uint256, /* value */
+    bytes calldata /* data */
+  ) external override returns (bytes4) {
+    lastReceivedFrom = from;
+    numTimesReceived++;
+    return this.onERC1155Received.selector;
+  }
+
+  function onERC1155BatchReceived(
+    address, /* operator */
+    address from,
+    uint256[] calldata ids,
+    uint256[] calldata, /* values */
+    bytes calldata /* data */
+  ) external override returns (bytes4) {
+    lastReceivedFrom = from;
+    numTimesReceived += ids.length;
+    return this.onERC1155BatchReceived.selector;
+  }
+
+  function supportsInterface(bytes4 interfaceId) external pure override returns (bool) {
+    return interfaceId == type(IERC1155Receiver).interfaceId;
   }
 }

@@ -3,7 +3,7 @@ import type {MyERC20__factory} from '../types/typechain';
 import constants from '../constants';
 
 /**
- * Deploys an ERC20 contract. Name and Symbol is given from `constants`
+ * Deploys an ERC20 contract. Constructor arguments are given from {constants}.
  * @returns address of the deployed contract
  */
 export default async function main(): Promise<string> {

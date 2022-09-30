@@ -2,7 +2,8 @@ import {expect} from 'chai';
 import {ethers} from 'hardhat';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {MyERC721, MyERC721__factory} from '../types/typechain';
-import constants from '../constants';
+import allConstants from '../constants';
+const constants = allConstants.MyERC721;
 
 describe('ERC721', () => {
   let myERC721: MyERC721;
@@ -12,19 +13,14 @@ describe('ERC721', () => {
   before(async () => {
     [owner, alice] = await ethers.getSigners();
     const factory = (await ethers.getContractFactory('MyERC721', owner)) as MyERC721__factory;
-    myERC721 = await factory.deploy(
-      constants.MyERC721.name,
-      constants.MyERC721.symbol,
-      constants.MyERC721.supply,
-      constants.MyERC721.baseURI
-    );
+    myERC721 = await factory.deploy(constants.name, constants.symbol, constants.supply, constants.baseURI);
     await myERC721.deployed();
   });
 
   describe('deployment', async () => {
     it('should have correct name, symbol and owner', async () => {
-      expect(await myERC721.name()).to.eq(constants.MyERC721.name);
-      expect(await myERC721.symbol()).to.eq(constants.MyERC721.symbol);
+      expect(await myERC721.name()).to.eq(constants.name);
+      expect(await myERC721.symbol()).to.eq(constants.symbol);
       expect(await myERC721.owner()).to.eq(owner.address);
     });
   });
@@ -48,7 +44,7 @@ describe('ERC721', () => {
       // correct balance
       expect(await myERC721.balanceOf(owner.address)).to.eq(ownerTokensMint.length);
       // correct tokenURIs
-      expect(await myERC721.tokenURI(ownerTokensMint[0])).to.eq(constants.MyERC721.baseURI + ownerTokensMint[0]);
+      expect(await myERC721.tokenURI(ownerTokensMint[0])).to.eq(constants.baseURI + ownerTokensMint[0]);
     });
 
     // mint [n, n+1, ..., n+n-1] to Alice
@@ -63,7 +59,7 @@ describe('ERC721', () => {
       // correct balance
       expect(await myERC721.balanceOf(alice.address)).to.eq(aliceTokensMint.length);
       // correct tokenURIs
-      expect(await myERC721.tokenURI(aliceTokensMint[0])).to.eq(constants.MyERC721.baseURI + aliceTokensMint[0]);
+      expect(await myERC721.tokenURI(aliceTokensMint[0])).to.eq(constants.baseURI + aliceTokensMint[0]);
     });
 
     it('should NOT mint for Alice via Alice', async () => {

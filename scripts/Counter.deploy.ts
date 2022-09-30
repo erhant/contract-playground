@@ -2,7 +2,7 @@ import {ethers} from 'hardhat';
 import type {Counter__factory} from '../types/typechain';
 
 /**
- * Deploys a Counter contract
+ * Deploys a Counter contract.
  * @returns address of the deployed contract
  */
 export default async function main(): Promise<string> {

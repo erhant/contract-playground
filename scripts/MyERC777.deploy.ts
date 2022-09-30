@@ -4,7 +4,7 @@ import constants from '../constants';
 import deployERC1820 from './ERC1820.deploy';
 
 /**
- * Deploys an ERC777 contract. Name and Symbol is given from `constants`
+ * Deploys an ERC777 contract. Constructor arguments are given from {constants}.
  * @returns address of the deployed contract
  */
 export default async function main(): Promise<string> {

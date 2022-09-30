@@ -2,8 +2,9 @@ import {expect} from 'chai';
 import {ethers} from 'hardhat';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {MyERC777, MyERC777__factory, MyERC777Recipient, MyERC777Recipient__factory} from '../types/typechain';
-import constants from '../constants';
+import allConstants from '../constants';
 import deployERC1820 from '../scripts/ERC1820.deploy';
+const constants = allConstants.MyERC777;
 
 describe('ERC777', () => {
   let myERC777: MyERC777;
@@ -18,20 +19,15 @@ describe('ERC777', () => {
     await deployERC1820(owner);
 
     const erc777Factory = (await ethers.getContractFactory('MyERC777', owner)) as MyERC777__factory;
-    myERC777 = await erc777Factory.deploy(
-      constants.MyERC777.name,
-      constants.MyERC777.symbol,
-      constants.MyERC777.supply,
-      [owner.address]
-    );
+    myERC777 = await erc777Factory.deploy(constants.name, constants.symbol, constants.supply, [owner.address]);
     await myERC777.deployed();
   });
 
   describe('deployment', async () => {
     it('should have correct name, symbol, and supply at owner', async () => {
-      expect(await myERC777.name()).to.eq(constants.MyERC777.name);
-      expect(await myERC777.symbol()).to.eq(constants.MyERC777.symbol);
-      expect(await myERC777.balanceOf(owner.address)).to.eq(constants.MyERC777.supply);
+      expect(await myERC777.name()).to.eq(constants.name);
+      expect(await myERC777.symbol()).to.eq(constants.symbol);
+      expect(await myERC777.balanceOf(owner.address)).to.eq(constants.supply);
     });
   });
 
