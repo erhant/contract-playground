@@ -7,6 +7,7 @@ import '@nomiclabs/hardhat-waffle';
 import '@typechain/hardhat';
 import '@nomiclabs/hardhat-etherscan';
 import '@nomiclabs/hardhat-solhint';
+import '@nomicfoundation/hardhat-chai-matchers';
 // import 'hardhat-erc1820'; // ERC777 needs ERC1820 to be deployed at a specific address
 
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
