@@ -8,13 +8,8 @@ import '@typechain/hardhat';
 import '@nomiclabs/hardhat-etherscan';
 import '@nomiclabs/hardhat-solhint';
 import '@nomicfoundation/hardhat-chai-matchers';
-// import 'hardhat-erc1820'; // ERC777 needs ERC1820 to be deployed at a specific address
 
-const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
-
-const config: HardhatUserConfig & {
-  etherscan: {apiKey: string | undefined};
-} = {
+const config: HardhatUserConfig = {
   defaultNetwork: 'hardhat',
   solidity: {
     compilers: [{version: '0.8.9', settings: {}}],
@@ -26,10 +21,6 @@ const config: HardhatUserConfig & {
   networks: {
     hardhat: {},
     localhost: {},
-  },
-  etherscan: {
-    // Your API key for Etherscan (from https://etherscan.io/)
-    apiKey: ETHERSCAN_API_KEY,
   },
 };
 

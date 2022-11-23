@@ -3,7 +3,7 @@ pragma solidity ^0.8.9;
 
 /// A simple counter contract, which counts up and down.
 contract Counter {
-  uint256 private count = 0;
+  uint256 private count; // 0 by default
 
   event CountedTo(uint256 newCount);
 
@@ -12,18 +12,15 @@ contract Counter {
   }
 
   function countUp() external returns (uint256) {
-    uint256 newCount = count + 1;
-    require(newCount > count, "Uint256 overflow");
-
-    count = newCount;
-
+    // does not check for overflow, as compiler 0.8.0^ adds runtime checks for that and panics
+    count++;
     emit CountedTo(count);
     return count;
   }
 
   function countDown() external returns (uint256) {
-    // does not check for underflow, as compiler 0.8.0^ adds runtime checks for that
-    count = count - 1;
+    // does not check for underflow, as compiler 0.8.0^ adds runtime checks for that and panics
+    count--;
     emit CountedTo(count);
     return count;
   }

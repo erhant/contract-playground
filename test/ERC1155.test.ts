@@ -3,7 +3,6 @@ import {ethers} from 'hardhat';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {MyERC1155, MyERC1155__factory} from '../types/typechain';
 import allConstants from '../constants';
-import {parseEther} from 'ethers/lib/utils';
 import {BigNumber} from 'ethers';
 import {MyERC1155Recipient} from '../types/typechain/contracts/MyERC1155.sol';
 import {MyERC1155Recipient__factory} from '../types/typechain/factories/contracts/MyERC1155.sol';
